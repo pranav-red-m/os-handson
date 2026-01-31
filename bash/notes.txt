@@ -1,0 +1,16 @@
+Ok so right now we are doing bash scrips and ocmmands most baics are shells and shell variables and envirnoment variables and entering a child shell. Now lets do some bash scrips the most basic of them is if a file exists inn the directory
+if [-f wel.exe]
+then
+echo "File Exists"
+else
+echo "File Does not exists"
+fi
+
+Now lets do for loops in tghe bash directoryu
+for i in {1..5}
+do
+echo "i=$i"
+done
+
+obvio yuo can do nested for loops also
+
