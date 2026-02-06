@@ -1,48 +1,47 @@
-#include<stdio.h>
-#include<string.h>
-int main()
+#include <stdio.h>
+#include <stdlib.h>
+void sort(int pid[],int at[],int bt[],int n) 
 {
-	char pn[10][10],t[10];
-	int arr[10],bur[10],star[10],finish[10],tat[10],wt[10],i,j,n,temp;
-	int totwt=0, tottat=0;
-	printf("Enter the number of processes to schedule: ");
-	scanf("%d",&n);
-	for(i=0;i<n;i++)
+    for (int i=0;i<n-1;i++) 
 	{
-		printf("Enter the process name,arrival time and burst time of the process: ");
-		scanf("%s %d %d",pn[i],&arr[i],&bur[i]);
-	}
-	for(i=0;i<n;i++)
-	{
-		for(j=0;j<n;j++)
+        for (int j=i+1;j<n;j++) 
+		{
+            if (at[i]>at[j]) 
 			{
-				if(arr[i]<arr[j])
-					{
-						temp = arr[i];
-						arr[i] = arr[j];
-						arr[j] = temp;
-						temp = bur[i];
-						bur[i] = bur[j];
-						bur[j] = temp;
-						strcpy(t,pn[i]);
-						strcpy(pn[i],pn[j]);
-						strcpy(pn[j],t);
-					}
-			}
-	}
-	for(i=0;i<n;i++)
+                int t;
+                t = at[i];at[i]=at[j];at[j]=t;
+                t = bt[i];bt[i]=bt[j];bt[j]=t;
+                t = pid[i];pid[i]=pid[j];pid[j]=t;
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+    int pid[n], at[n], bt[n], ct[n], tat[n], wt[n];
+    for (int i = 0; i < n; i++) 
 	{
-		if(0==i) star[i] = arr[i];
-		else star[i] = finish[i-1];
-		wt[i]=star[i]+bur[i];
-		finish[i] = star[i]+bur[i];
-		tat[i] = finish[i] - arr[i];
-	}
-	printf("\nProcessName\tArrivalTime\tBurstTime\tWaitTime\tStart\tTurnAroundTime\tFinish");
-	printf("\n---------\t---------\t---------\t---------\t---------\t---------\t---------");
-	for(i=0;i<n;i++)
-	{
-		printf("\n%s\t\t%3d\t\t%3d\t\t%3d\t\t%3d\t%6d\t\t%6d\n",pn[i],arr[i],bur[i],wt[i],star[i],tat[i],finish[i]);
-	}
-	return 0;
+        pid[i] = i+1;
+        printf("Enter Arrival Time and Burst Time for P%d: ", pid[i]);
+        scanf("%d %d",&at[i],&bt[i]);
+    }
+    sort(pid, at, bt, n);
+    int time = 0;
+    for (int i = 0; i < n; i++) {
+        if (time < at[i])
+            time = at[i];
+        time += bt[i];
+        ct[i] = time;
+        tat[i] = ct[i] - at[i];
+        wt[i]  = tat[i] - bt[i];
+    }
+    printf("\nP\tAT\tBT\tCT\tTAT\tWT\n");
+    for (int i = 0; i < n; i++) {
+        printf("P%d\t%d\t%d\t%d\t%d\t%d\n",
+               pid[i], at[i], bt[i], ct[i], tat[i], wt[i]);
+    }
+    return 0;
 }
